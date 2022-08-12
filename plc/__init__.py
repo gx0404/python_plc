@@ -8,6 +8,7 @@ import sys
 path = os.path.dirname(__file__)
 sys.path.append(path)
 from config.read_write import Read_write_json
+from config import io_type_dict
 
 """从plc读取的byte转换为int"""
 
@@ -49,7 +50,8 @@ class plc_snap7(object):
         """从config.json读取配置,创建snap7"""
         self.read_write = Read_write_json()
         # 从config.json拿去读取类型，和从config.json里读取plc地址，防止重复连接
-        self.io_type_dict = self.read_write.read("io_type_dict")
+        #self.io_type_dict = self.read_write.read("io_type_dict")
+        self.io_type_dict = io_type_dict
         self.ip = self.read_write.read("plc_adress")
         self.plc = snap7.client.Client()
 

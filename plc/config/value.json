@@ -1,6 +1,6 @@
 {
-    "operation": "get_db_word db10 10",
-    "plc_adress": "192.168.37.10",
-    "value": -9003,
-    "value_type": "db 10"
+    "operation": "get_bool inputNone 0.4",
+    "plc_adress": "10.3.7.21",
+    "value": true,
+    "value_type": "input None"
 }
