@@ -1,6 +1,6 @@
 {
     "operation": "get_bool inputNone 0.4",
-    "plc_adress": "10.3.7.21",
+    "plc_address": "192.168.37.144",
     "value": true,
     "value_type": "input None"
 }
