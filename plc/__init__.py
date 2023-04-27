@@ -190,16 +190,22 @@ class plc_snap7(object):
         self.write_json(self.set_int.__name__, io_type, int_address, value, db_address)
         return True
 
-    def get_float(self, io_type, float_address, db_address=None):
+    def get_float(self, io_type, float_address, array_num, db_address=None):
         if db_address is None:
             db_address = 0
-        data = self.plc.read_area(self.io_type_dict[io_type], db_address, float_address, 4)
-        float_res = struct.unpack('!f', data)
-        return float_res[0]
+        float_res_list = []
+        for i in range(array_num):
+            data = self.plc.read_area(self.io_type_dict[io_type], db_address, float_address+i*4, 4)
+            float_res = struct.unpack('!f', data)
+            float_res_list.append(float_res[0])
+        return float_res_list
 
-    def get_char(self, io_type, char_address, db_address=None):
+    def get_char(self, io_type, char_address, array_num, db_address=None):
         if db_address is None:
             db_address = 0
-        data = self.plc.read_area(self.io_type_dict[io_type], db_address, char_address, 1)
-        char_result = data.decode("utf-8", errors="ignore")
-        return char_result
+        char_res_list = ""
+        for i in range(array_num):
+            data = self.plc.read_area(self.io_type_dict[io_type], db_address, char_address+i*1, 1)
+            char_result = data.decode("utf-8", errors="ignore")
+            char_res_list = char_res_list+char_result
+        return char_res_list
