@@ -1,16 +1,26 @@
 import json
 import os
+
 path = os.path.dirname(__file__)
-class Read_write_json(object):
+
+
+class ReadWriteJson(object):
     def __init__(self):
         file1_name = "value.json"
         file2_name = "config.json"
         self.path1 = os.path.join(path, file1_name)
         self.path2 = os.path.join(path, file2_name)
         with open(self.path1) as value_json:
-            self.value_list_old = json.load(value_json)
+            # self.value_list_old = json.load(value_json)
+            self.value_list_old = {
+                "operation": "set_bool output goble values 0.2",
+                "plc_address": "192.168.36.5",
+                "value": False,
+                "value_type": "output goble values"
+            }
         with open(self.path2) as config_json:
-            self.config_list_old = json.load(config_json)
+            # self.config_list_old = json.load(config_json)
+            self.config_list_old = {"io_type_dict": {"input": 129, "mw": 131, "m_bool": 131, "db": 132, "output": 130}}
 
     def read(self, name):
         if name in tuple(self.value_list_old):

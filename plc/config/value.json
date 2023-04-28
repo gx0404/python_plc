@@ -1,6 +1,6 @@
 {
-    "operation": "get_bool inputNone 0.6",
-    "plc_address": "192.168.37.5",
+    "operation": "set_bool output goble values 0.2",
+    "plc_address": "192.168.36.5",
     "value": false,
-    "value_type": "input None"
+    "value_type": "output goble values"
 }
