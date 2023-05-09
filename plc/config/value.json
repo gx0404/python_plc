@@ -1,6 +1,6 @@
 {
-    "operation": "set_bool output goble values 0.2",
-    "plc_address": "192.168.36.5",
-    "value": false,
-    "value_type": "output goble values"
+    "operation": "set_int db db2 1908",
+    "plc_address": "192.168.37.144",
+    "value": 17164,
+    "value_type": "db db2"
 }

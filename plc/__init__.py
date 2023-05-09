@@ -79,6 +79,9 @@ class plc_snap7(object):
     def get_connected(self):
         return self.plc.get_connected()
 
+    def dis_connected(self):
+        return self.plc.disconnect()
+
     """读取bool值，返回值为读取的byte，和右移到最后一位的值（用于判断所要的bool值）"""
 
     def read_bool(self, read_type, address, db_address=0):
@@ -149,22 +152,31 @@ class plc_snap7(object):
 
     """读取 setting DB块 INT值"""
 
-    def get_int(self, io_type, int_address, db_address=0):
-        data = self.plc.read_area(self.io_type_dict[io_type], db_address, int_address, 2)
-        # 读取plc的两个byte转换为二进制
-        plc_byte1 = "{:b}".format(data[0])
-        plc_byte2 = "{:b}".format(data[1])
-        # 未考虑负数直接得到两个byte的整数值
-        num1 = (plc_byte_num(plc_byte1)) << 8
-        num2 = plc_byte_num(plc_byte2)
-        num = num1 + num2
-        # 判断int值是否为负数
-        if num < 32768:
-            res = num
-        else:
-            res = -(65536 - num)
-        self.write_json(self.get_int.__name__, io_type, int_address, res, db_address)
-        return res
+    def get_ints(self, io_type, int_address, array_num, db_address=0):
+        data = self.plc.read_area(self.io_type_dict[io_type], db_address, int_address, 2*array_num)
+        # # 读取plc的两个byte转换为二进制
+        # plc_byte1 = "{:b}".format(data[0])
+        # plc_byte2 = "{:b}".format(data[1])
+        res_list = []
+        for i in range(0,len(data),2):
+            int_bytes = data[i:i+2]
+            int_value = int.from_bytes(int_bytes,"big")
+            if int_value < 32768:
+                res = int_value
+            else:
+                res = -(65536 - int_value)
+            res_list.append(res)
+        # # 未考虑负数直接得到两个byte的整数值
+        # num1 = (plc_byte_num(plc_byte1)) << 8
+        # num2 = plc_byte_num(plc_byte2)
+        # num = num1 + num2
+        # # 判断int值是否为负数
+        # if num < 32768:
+        #     res = num
+        # else:
+        #     res = -(65536 - num)
+        self.write_json(self.get_ints.__name__, io_type, int_address, res, db_address)
+        return res_list
 
     """赋值plc DB块 INT值"""
     "int值为正数时，第一个字节的最高位为0，负数则为1"
