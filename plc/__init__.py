@@ -221,10 +221,9 @@ class plc_snap7(object):
             raise Exception("无效的字符串")
         else:
             if len(value) > 1:
-                raise Exception("字符串只能为一个单位")
-            if len(value)==0:
-                value = " " 
-                
+                raise Exception("字符只能为一个单位")
+            if len(value) == 0:
+                value = " "
             char_value = value.encode("utf-8")
             self.plc.write_area(self.io_type_dict[io_type], db_address, char_address, char_value)
             return True
